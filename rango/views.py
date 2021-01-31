@@ -60,6 +60,7 @@ def show_category(request, category_name_slug):
         # Go render the response and return it to the client.
     return render(request, 'rango/category.html', context=context_dict)
 
+@login_required
 def add_category(request):
     form = CategoryForm()
 
@@ -83,6 +84,7 @@ def add_category(request):
     # Render the form with error message (if any).
     return render(request, "rango/add_category.html", {"form": form})
 
+@login_required
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -160,7 +162,7 @@ def register(request):
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
-            print(user_form.errors, profile_forms.errors)
+            print(user_form.errors, profile_form.errors)
     else:
         # Not a HTTP POST, so we render our form using two ModelForm instances.
         # These forms will be blank, ready for the user input.
@@ -218,7 +220,7 @@ def user_login(request):
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
+    return render(request, 'rango/restricted.html')
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
